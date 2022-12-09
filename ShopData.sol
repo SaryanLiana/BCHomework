@@ -2,14 +2,12 @@
 
 pragma solidity ^0.8;
 
-
 /**
 * @title Shop
 * @dev this contract is the database for the shop. 
 */
 contract Shop {
     
-
     address shop = 0x17F6AD8Ef982297579C203069C1DbfFE4348c372;
    
     /**
