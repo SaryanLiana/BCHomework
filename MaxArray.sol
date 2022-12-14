@@ -18,8 +18,8 @@ contract MaxArray{
 
         require(_arr.length > _num, "Size error");
 
-        for(uint i = 0; i < _arr.length - 2; i++){
-            for(uint j = i + 1; j < _arr.length - 1; j++){
+        for(uint i = 0; i < _arr.length - 1; i++){
+            for(uint j = i + 1; j < _arr.length; j++){
                 if(_arr[i] > _arr[j]){
                     (_arr[i], _arr[j]) = (_arr[j], _arr[i]);
                 }
