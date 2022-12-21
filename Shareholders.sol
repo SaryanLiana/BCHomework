@@ -25,8 +25,8 @@ contract Shareholder {
     /**
     * The constructor initializes the owner.
     */
-    constructor() {
-        owner = msg.sender;
+    constructor(address _owner) {
+        owner = _owner;
     }
 
     /**
