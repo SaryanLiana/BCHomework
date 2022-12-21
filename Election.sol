@@ -76,8 +76,7 @@ contract Election{
             uint256 _percentage = results[_candidateAddress];
             IShareholders(shareholderContractAddress).addUsers(_candidateAddress, _percentage);
         }
-        // payable(shareholderContractAddress).transfer(address(this).balance);
         (bool success,) = _shareholderContractAddress.call{ value: address(this).balance }("");
-        require(success, "Faild!");
+        require(success, "Election: Faild!");
     }
 }
