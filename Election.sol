@@ -65,18 +65,27 @@ contract Election{
     } 
 
     /**
-    * @dev call addUssers from Shareholder contract.
-    * @param _shareholderContractAddress the address of the Shareholder contract.
+    * @dev gives money to cadidates according to their collected votes.
+    * @param _shareholderContractAddress address of Shareholder contract.
     */
-    function callAddUsers(address _shareholderContractAddress) public {
-        require(block.timestamp > endAt, "Election: The election is not over yet.");
+    function UpdateTime(address _shareholderContractAddress) external {
         shareholderContractAddress = _shareholderContractAddress;
+        if(block.timestamp > endAt) {
+            callAddUsers();
+        }
+    }
+
+    /**
+    * @dev call addUssers from Shareholder contract.
+    */
+    function callAddUsers() private {
+        require(block.timestamp > endAt, "Election: The election is not over yet.");
         for(uint256 _index; _index < candidatesAddresses.length; _index++) {
             address payable _candidateAddress = candidatesAddresses[_index];
             uint256 _percentage = results[_candidateAddress];
             IShareholders(shareholderContractAddress).addUsers(_candidateAddress, _percentage);
         }
-        (bool success,) = _shareholderContractAddress.call{ value: address(this).balance }("");
+        (bool success,) = shareholderContractAddress.call{ value: address(this).balance }("");
         require(success, "Election: Faild!");
     }
 }
