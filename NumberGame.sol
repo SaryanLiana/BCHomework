@@ -15,20 +15,41 @@ contract NumberGame {
         uint userPoint;
     }
 
+    string success = "Congratulations, you won!";
+    string failure = "Thank you for playing!"; 
+    
     mapping(address => Users) public rewardPart;
 
     uint eps = 5;
+    uint256 public randomNum;
     
     /**
-    * @dev checks if user's number is in the epsilon neighborhood of a random number or not.
+    * @dev generates random number.
     * @param _num number that user entered.
+    * @return randomNum number between 0 and _num.
     */
-    function checkRandomNumber(uint _num) public {
+    function getRandomNumber(uint256 _num) public returns(uint256) {
+        return randomNum = uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty, msg.sender))) % _num;
+    }
 
-        uint randomnum = uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, msg.sender))) % _num;
-
-        if(randomnum > _num - eps || randomnum < _num + eps){
-            rewardPart[msg.sender].userPoint += 10;
+    /**
+    * @dev checks if user's number is in the epsilon neighborhood of a random number or not.
+    * @param _number number that user entered.
+    */
+    function checkTheProximity(uint256 _number) public returns(string memory) {
+        if(randomNum > _number) {
+            if(randomNum - _number < eps) {
+                rewardPart[msg.sender].userPoint += 10;
+                return success;
+            }
+            return failure;
+        }
+        else {
+            if(_number - randomNum < eps) {
+                rewardPart[msg.sender].userPoint += 10;
+                return success;
+            }
+            return failure;
         }
     }
 }
