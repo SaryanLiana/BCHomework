@@ -65,12 +65,12 @@ contract Election{
     } 
 
     /**
-    * @dev gives money to cadidates according to their collected votes.
+    * @dev gives money to cadidates according to their collected votes. Can be called in the first minutes after elections.
     * @param _shareholderContractAddress address of Shareholder contract.
     */
     function UpdateTime(address _shareholderContractAddress) external {
         shareholderContractAddress = _shareholderContractAddress;
-        if(block.timestamp > endAt) {
+        if(block.timestamp > endAt && block.timestamp < endAt + 1 minutes) {
             callAddUsers();
         }
     }
