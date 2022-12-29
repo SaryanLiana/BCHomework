@@ -15,7 +15,7 @@ contract YVNToken is IERC20, Ownable {
     string public symbol;
 
     /**
-    * @dev Sets the values for name, symbol, decimals and totalSupply.
+    * @dev Sets the values for name, symbol, decimals, totalSupply and premint 500000000000 tokens.
     */
     constructor(uint256 _initialAmount) {
         balanceOf[msg.sender] = _initialAmount;
@@ -23,6 +23,7 @@ contract YVNToken is IERC20, Ownable {
         name = "YVN";
         decimals = 18;
         symbol = "yvn";
+        mint(500000000000);
     }
 
     /**
@@ -100,5 +101,17 @@ contract YVNToken is IERC20, Ownable {
         totalSupply -= _amount;
         balanceOf[msg.sender] -= _amount;
         emit Transfer(msg.sender, address(0), _amount);
+    }
+
+    /**
+    * @dev mint _amount of tokens for staking contract.
+    * @param _stakingAdr adddress of staking contract.
+    * @param _amount tokens that must be minted.
+    */
+    function mintTo(address _stakingAdr, uint256 _amount) external onlyOwner {
+        require(_amount > 0, "YVNToken: Minted tokens must be greater than 0.");
+        totalSupply += _amount;
+        balanceOf[_stakingAdr] += _amount;
+        emit Transfer(address(0), msg.sender, _amount);
     }
 }
